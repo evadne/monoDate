@@ -10,9 +10,11 @@ String.prototype.padToLengthWithPaddingString = function(destinationLength, padd
 	if (!destinationLength) return this;
 	paddingString = paddingString || "0";
 
+	if (this.length >= destinationLength)
+	return this;
+
 	var final = "" + this;
 
-	if (this.length < destinationLength)
 	for (var i = 0; i <= (destinationLength - this.length - 1); i++)
 	final = (paddingString + final);
 	
