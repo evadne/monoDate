@@ -5,6 +5,16 @@
 
 
 
+String.prototype.clone = function() {
+	
+	return this.slice();
+	
+}
+
+
+
+
+
 String.prototype.padToLengthWithPaddingString = function(destinationLength, paddingString) {
 
 	if (!destinationLength) return this;
@@ -72,17 +82,17 @@ Date.prototype.format = function(formatString) {
 	
 	for (templateItemKey in templates) {
 	
-		if (!templates.hasOwnProperty(templateItemKey)) return;
+		if (!templates.hasOwnProperty(templateItemKey)) break;
 		
 		var pattern = new RegExp("(#\\{)(" + templateItemKey + ")(?:, )?(?:\\d+)?(\\})", "ig")
 		
 		templateTagOccurrances = formatString.match(pattern);
 
 		for (templateItemOccurranceKey in templateTagOccurrances) {
-		
-			if (!templateTagOccurrances.hasOwnProperty(templateItemOccurranceKey)) return;
+
+			if (!templateTagOccurrances.hasOwnProperty(templateItemOccurranceKey)) break;
 			
-			templateItemOccurranceString = templateTagOccurrances[templateItemOccurranceKey]
+			templateItemOccurranceString = templateTagOccurrances[templateItemOccurranceKey];
 			
 			formatString = formatString.replace(
 			
@@ -95,7 +105,7 @@ Date.prototype.format = function(formatString) {
 		}
 	
 	}
-
+	
 	return formatString;
 	
 }
@@ -103,4 +113,4 @@ Date.prototype.format = function(formatString) {
 
 
 
- 
+
