@@ -23,12 +23,12 @@ String.prototype.padToLengthWithPaddingString = function(destinationLength, padd
 	if (this.length >= destinationLength)
 	return this;
 
-	var final = "" + this;
+	var finalString = "" + this;
 
 	for (var i = 0; i <= (destinationLength - this.length - 1); i++)
-	final = (paddingString + final);
+	finalString = (paddingString + finalString);
 	
-	return final;
+	return finalString;
 	
 }
 
