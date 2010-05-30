@@ -67,6 +67,8 @@ Date.prototype.format = function(formatString) {
 	
 	var parseDigitPredicate = function(inputString) {
 	
+		if (!inputString) return undefined;
+	
 		var pattern = /(\d+)(})/ig;
 	
 		if (inputString.match(pattern) != null)
@@ -93,6 +95,8 @@ Date.prototype.format = function(formatString) {
 			if (!templateTagOccurrances.hasOwnProperty(templateItemOccurranceKey)) break;
 			
 			templateItemOccurranceString = templateTagOccurrances[templateItemOccurranceKey];
+			
+			if (!templateItemOccurranceString) continue;
 			
 			formatString = formatString.replace(
 			
