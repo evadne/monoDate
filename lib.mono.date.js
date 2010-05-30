@@ -17,11 +17,11 @@ String.prototype.clone = function() {
 
 String.prototype.padToLengthWithPaddingString = function(destinationLength, paddingString) {
 
-	if (!destinationLength) return this;
+	if (!destinationLength) return String(this);
 	paddingString = paddingString || "0";
 
 	if (this.length >= destinationLength)
-	return this;
+	return String(this);
 
 	var finalString = "" + this;
 
