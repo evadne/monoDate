@@ -7,7 +7,7 @@
 
 String.prototype.clone = function() {
 	
-	return this.slice();
+	return this.slice('');
 	
 }
 
@@ -102,7 +102,7 @@ Date.prototype.format = function(formatString) {
 			
 				templateItemOccurranceString,
 
-				String(templates[templateItemKey]).padToLengthWithPaddingString(parseDigitPredicate(templateItemOccurranceString))
+				String(templates[templateItemKey]).padToLengthWithPaddingString(parseDigitPredicate(templateItemOccurranceString), "0")
 			
 			);
 					
