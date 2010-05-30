@@ -7,7 +7,7 @@
 
 String.prototype.clone = function() {
 	
-	return this.slice('');
+	return this.slice(0);
 	
 }
 
