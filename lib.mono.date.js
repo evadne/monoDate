@@ -44,10 +44,8 @@ Date.prototype.format = function(formatString) {
 	
 		"YEAR": this.getFullYear(),
 		"MONTH": this.getMonth() + 1,
-		"DATE": this.getDate(),
+		"DAY": this.getDate(),			//	Why the day is called “date” is beyond imagination
 
-		"DAY": this.getDay(),
-		
 		"HOURS": this.getHours(),
 		"MINUTES": this.getMinutes(),
 		"SECONDS": this.getSeconds()
@@ -122,37 +120,37 @@ Date.prototype.format = function(formatString) {
 
 	Date.prototype.nextDay = function() {
 	
-		return this.setDay(parseInt(this.getDay()) + 1);
+		return new Date(this.setDate(parseInt(this.getDate()) + 1));
 	
 	}
 
 	Date.prototype.previousDay = function () {
 	
-		return this.setDay(parseInt(this.getDay()) - 1);
+		return new Date(this.setDate(parseInt(this.getDate()) - 1));
 	
 	}
 	
 	Date.prototype.nextMonth = function() {
 	
-		return this.setMonth(parseInt(this.getMonth()) + 1);
+		return new Date(this.setMonth(parseInt(this.getMonth()) + 1));
 	
 	}
 
 	Date.prototype.previousMonth = function () {
 	
-		return this.setMonth(parseInt(this.getMonth()) - 1);
+		return new Date(this.setMonth(parseInt(this.getMonth()) - 1));
 	
 	}
 	
 	Date.prototype.nextYear = function() {
 	
-		return this.setYear(parseInt(this.getYear()) + 1);
+		return new Date(this.setYear(parseInt(this.getYear()) + 1));
 	
 	}
 
 	Date.prototype.previousYear = function () {
 	
-		return this.setYear(parseInt(this.getYear()) - 1);
+		return new Date(this.setYear(parseInt(this.getYear()) - 1));
 	
 	}
 
