@@ -157,3 +157,73 @@ Date.prototype.format = function(formatString) {
 
 
 
+
+//	Parsing & forming literals
+
+
+
+
+
+	//	ISO 8601: "2010-07-10T16:00:00.000+08:00"
+
+	Date.fromISO8601 = function (inString) {
+	
+		var dateString = String(inString);
+		var dateObject = Date.parse(inString);
+		if (isNaN(dateObject)) dateObject = new Date();
+		
+		var datePattern = /(\d{4})-?(\d{2})-?(\d{2})/;
+		var timePattern = /(\d{2}):?(\d{2}):?(\d{2})(\.\d+)?/;
+		var timeZoneOffsetPattern = /(Z|\+|-)(\d{2}):?(\d{2})/;
+		
+		var dateStringPattern = new RegExp(datePattern.source + "T?" + timePattern.source + timeZoneOffsetPattern.source + "?");
+		if (dateString.match(dateStringPattern) == null) return dateObject;
+		
+		
+		var dateMatches = dateString.match(datePattern);
+		if (dateMatches == null) return dateObject;
+		
+		dateObject.setUTCDate(1);
+		dateObject.setUTCFullYear(parseInt(dateMatches[1], 10));
+		dateObject.setUTCMonth(parseInt(dateMatches[2]) - 1);
+		dateObject.setUTCDate(parseInt(dateMatches[3]));
+		
+		
+		var timeMatches = dateString.match(timePattern);
+		if (timeMatches == null) return dateObject;
+		
+		dateObject.setUTCHours(parseInt(timeMatches[1]));
+		dateObject.setUTCMinutes(parseInt(timeMatches[2]));
+		dateObject.setUTCSeconds(parseInt(timeMatches[3]));
+		dateObject.setUTCMilliseconds(parseFloat(timeMatches[4]));
+		
+				
+		var timeZoneOffsetMatches = dateString.match(timeZoneOffsetPattern);
+		if (timeZoneOffsetMatches == null) return dateObject;
+		
+		var timeZoneOffsetMultiplier = (function(offsetLiteral){
+				
+			switch (offsetLiteral) {
+			
+				case "+": return 1; break;
+				case "-": return -1; break;
+				default: return 0; break;
+				
+			}
+		
+		})(timeZoneOffsetMatches[1]);
+		
+		var localTimeZoneOffsetInMinutes = dateObject.getTimezoneOffset();
+		var inDateTimeZoneOffsetInMinutes = parseInt(timeMatches[2]) * 60 + parseInt(timeMatches[3]);
+	
+		return new Date(Number(dateObject) + (inDateTimeZoneOffsetInMinutes - localTimeZoneOffsetInMinutes) * (60 * 1000));
+		
+	}
+	
+
+
+
+
+
+
+//	var matches = .match(/^(\d{4})-(\d{2})-(\d{2})/)
