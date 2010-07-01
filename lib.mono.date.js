@@ -118,3 +118,44 @@ Date.prototype.format = function(formatString) {
 
 
 
+//	Traversing in time
+
+	Date.prototype.nextDay = function() {
+	
+		return this.setDay(parseInt(this.getDay()) + 1);
+	
+	}
+
+	Date.prototype.previousDay = function () {
+	
+		return this.setDay(parseInt(this.getDay()) - 1);
+	
+	}
+	
+	Date.prototype.nextMonth = function() {
+	
+		return this.setMonth(parseInt(this.getMonth()) + 1);
+	
+	}
+
+	Date.prototype.previousMonth = function () {
+	
+		return this.setMonth(parseInt(this.getMonth()) - 1);
+	
+	}
+	
+	Date.prototype.nextYear = function() {
+	
+		return this.setYear(parseInt(this.getYear()) + 1);
+	
+	}
+
+	Date.prototype.previousYear = function () {
+	
+		return this.setYear(parseInt(this.getYear()) - 1);
+	
+	}
+
+
+
+
