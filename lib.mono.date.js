@@ -158,15 +158,20 @@ Date.prototype.format = function(formatString) {
 
 
 
-//	Parsing & forming literals
 
 
 
 
 
-	//	ISO 8601: "2010-07-10T16:00:00.000+08:00"
+	//	Parsing & forming literals
+
+
+
+
 
 	Date.fromISO8601 = function (inString) {
+	
+	//	ISO 8601: "2010-07-10T16:00:00.000+08:00"
 	
 		var dateString = String(inString);
 		var dateObject = Date.parse(inString);
@@ -219,11 +224,7 @@ Date.prototype.format = function(formatString) {
 		return new Date(Number(dateObject) + (inDateTimeZoneOffsetInMinutes - localTimeZoneOffsetInMinutes) * (60 * 1000));
 		
 	}
-	
 
 
 
 
-
-
-//	var matches = .match(/^(\d{4})-(\d{2})-(\d{2})/)
