@@ -179,6 +179,18 @@
 		return new Date(this.setYear(parseInt(this.getYear()) - 1));
 	
 	}
+	
+	Date.prototype.firstDayInMonth = function() {
+		
+		return new Date(this.setDate(1));
+		
+	}
+	
+	Date.prototype.lastDayInMonth = function() {
+		
+		return this.nextMonth().firstDayInMonth().previousDay();
+		
+	}
 
 
 
