@@ -201,6 +201,23 @@
 
 
 
+	//	Date Names
+	
+	Date.prototype.getDateName = function() {
+		
+		return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][this.getDay()];
+		
+	}
+
+
+
+
+
+
+
+
+
+
 	//	Parsing & forming literals
 
 
