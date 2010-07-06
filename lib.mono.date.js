@@ -144,45 +144,51 @@
 
 //	Traversing in time
 
+	Date.prototype.getDayInMonth = function() {
+		
+		return this.getDate();
+		
+	}
+
 	Date.prototype.nextDay = function() {
 	
-		return new Date(this.setDate(parseInt(this.getDate()) + 1));
+		return new Date((new Date(this)).setDate(parseInt(this.getDate()) + 1));
 	
 	}
 
 	Date.prototype.previousDay = function () {
 	
-		return new Date(this.setDate(parseInt(this.getDate()) - 1));
+		return new Date((new Date(this)).setDate(parseInt(this.getDate()) - 1));
 	
 	}
 	
 	Date.prototype.nextMonth = function() {
 	
-		return new Date(this.setMonth(parseInt(this.getMonth()) + 1));
+		return new Date((new Date(this)).setMonth(parseInt(this.getMonth()) + 1));
 	
 	}
 
 	Date.prototype.previousMonth = function () {
 	
-		return new Date(this.setMonth(parseInt(this.getMonth()) - 1));
+		return new Date((new Date(this)).setMonth(parseInt(this.getMonth()) - 1));
 	
 	}
 	
 	Date.prototype.nextYear = function() {
 	
-		return new Date(this.setYear(parseInt(this.getYear()) + 1));
+		return new Date((new Date(this)).setYear(parseInt(this.getYear()) + 1));
 	
 	}
 
 	Date.prototype.previousYear = function () {
 	
-		return new Date(this.setYear(parseInt(this.getYear()) - 1));
+		return new Date((new Date(this)).setYear(parseInt(this.getYear()) - 1));
 	
 	}
 	
 	Date.prototype.firstDayInMonth = function() {
 		
-		return new Date(this.setDate(1));
+		return new Date((new Date(this)).setDate(1));
 		
 	}
 	
@@ -191,21 +197,16 @@
 		return this.nextMonth().firstDayInMonth().previousDay();
 		
 	}
-
-
-
-
-
-
-
-
-
-
-	//	Date Names
 	
-	Date.prototype.getDateName = function() {
+	Date.prototype.firstMonthInYear = function() {
 		
-		return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][this.getDay()];
+		return new Date(this.getUTCFullYear(), 0, this.getDate());
+		
+	}
+	
+	Date.prototype.lastMonthInYear = function() {
+		
+		return new Date(this.getUTCFullYear(), 11, this.getDate());
 		
 	}
 
@@ -218,11 +219,41 @@
 
 
 
-	//	Parsing & forming literals
+//	Date Names
+	
+	Date.prototype.getDateName = function() {
+		
+		return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][this.getDay()];
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//	Missing Introspection Methods
+
+	Date.prototype.getWeek = function () {
+	
+		return Math.ceil((this - this.firstMonthInYear().firstDayInMonth()) / ((this - this.previousDay()) * 7));
+		
+	}
 
 
 
 
+
+
+
+
+
+
+//	Parsing & forming literals
 
 	Date.fromISO8601 = function (inString) {
 	
