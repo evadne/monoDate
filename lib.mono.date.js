@@ -209,6 +209,18 @@
 		return new Date(this.getUTCFullYear(), 11, this.getDate());
 		
 	}
+	
+	Date.prototype.firstDayInWeek = function() {
+		
+		return new Date(new Date(this).setDate(this.getDate() + (0 - this.getDay())));
+		
+	}
+	
+	Date.prototype.lastDayInWeek = function() {
+		
+		return new Date(new Date(this).setDate(this.getDate() + (6 - this.getDay())));
+		
+	}
 
 
 
@@ -240,7 +252,7 @@
 
 	Date.prototype.getWeek = function () {
 	
-		return Math.ceil((this - this.firstMonthInYear().firstDayInMonth()) / ((this - this.previousDay()) * 7));
+		return Math.ceil((this - this.firstMonthInYear().firstDayInMonth().firstDayInWeek()) / ((this - this.previousDay()) * 7));
 		
 	}
 
