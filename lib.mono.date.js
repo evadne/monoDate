@@ -255,9 +255,18 @@
 
 //	Parsing & forming literals
 
-	Date.fromISO8601 = function (inString) {
+	Date.fromISO8601 = function (inString, dateStringContainsDateOnly) {
 	
 	//	ISO 8601: "2010-07-10T16:00:00.000+08:00"
+	
+		if (dateStringContainsDateOnly) {
+		
+			var timeZoneOffsetInMinutes = -1 * (new Date()).getTimezoneOffset();
+			var timeZoneSign = (timeZoneOffsetInMinutes < 0) ? "-" : "+";
+			
+			inString = inString + "T00:00:00.000" + timeZoneSign + String(Math.floor(timeZoneOffsetInMinutes / 60)).padToLengthWithPaddingString(2) + ":" + String((timeZoneOffsetInMinutes % 60)).padToLengthWithPaddingString(2)
+		
+		}
 	
 		var dateString = String(inString);
 		var dateObject = Date.parse(inString);
@@ -268,8 +277,7 @@
 		var timeZoneOffsetPattern = /(Z|\+|-)(\d{2}):?(\d{2})/;
 		
 		var dateStringPattern = new RegExp(datePattern.source + "T?" + timePattern.source + timeZoneOffsetPattern.source + "?");
-		if (dateString.match(dateStringPattern) == null) return dateObject;
-		
+		if (dateString.match(dateStringPattern) == null) return undefined;
 		
 		var dateMatches = dateString.match(datePattern);
 		if (dateMatches == null) return dateObject;
@@ -288,10 +296,12 @@
 		dateObject.setUTCSeconds(parseInt(timeMatches[3]));
 		dateObject.setUTCMilliseconds(parseFloat(timeMatches[4]));
 		
-				
 		var timeZoneOffsetMatches = dateString.match(timeZoneOffsetPattern);
 		if (timeZoneOffsetMatches == null) return dateObject;
-		
+
+
+	//	Nota: the input timezone is offset already if the code below this line continues
+	
 		var timeZoneOffsetMultiplier = (function(offsetLiteral){
 				
 			switch (offsetLiteral) {
@@ -307,7 +317,7 @@
 		var localTimeZoneOffsetInMinutes = dateObject.getTimezoneOffset();
 		var inDateTimeZoneOffsetInMinutes = parseInt(timeMatches[2]) * 60 + parseInt(timeMatches[3]);
 	
-		return new Date(Number(dateObject) + (inDateTimeZoneOffsetInMinutes - localTimeZoneOffsetInMinutes) * (60 * 1000));
+		return new Date(Number(dateObject) - (inDateTimeZoneOffsetInMinutes - localTimeZoneOffsetInMinutes) * (60 * 1000));
 		
 	}
 
