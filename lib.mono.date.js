@@ -342,3 +342,51 @@
 
 
 
+
+//	Relative date
+
+	Date.prototype.relativeDate = function () {
+	
+		var nowInMilliseconds = (new Date()).getTime();
+		var recentDateInMilliseconds = this.getTime();
+		
+		var dateDifferenceInMilliseconds = recentDateInMilliseconds - nowInMilliseconds;
+		
+		var dateIsEarlier = (dateDifferenceInMilliseconds < 0);
+		dateDifferenceInMilliseconds = Math.abs(dateDifferenceInMilliseconds);
+		
+		var differenceProportionsFromMilliseconds = {
+		
+			"seconds": 1000,
+			"minutes": 60,
+			"hours": 60,
+			"days": 24,
+			"years": 365.25
+		
+		};
+		
+		var finalDateDifferenceMagnitude = "milliseconds";
+		var finalDateDifferenceValue = dateDifferenceInMilliseconds;
+		var finalDateDifferenceValueMultiplicator = (dateIsEarlier ? -1 : 1);
+		
+		var workingDifferenceStore = 1;
+		
+		$.each(differenceProportionsFromMilliseconds, function(differenceLevel, differenceMultiplicator) {
+		
+			workingDifferenceStore *= differenceMultiplicator;
+		
+			if (Math.floor(dateDifferenceInMilliseconds / workingDifferenceStore) < 1) return;
+			
+			finalDateDifferenceMagnitude = differenceLevel;
+			
+			finalDateDifferenceValue = (dateDifferenceInMilliseconds / workingDifferenceStore);
+			
+		});
+				
+		return {
+		
+			"differenceUnit": finalDateDifferenceMagnitude,
+			"differenceValue": finalDateDifferenceValueMultiplicator * Math.floor(finalDateDifferenceValue)
+		}
+
+	}
