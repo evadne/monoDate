@@ -12,13 +12,13 @@
 
 //	Helpers
 
-	String.prototype.clone = function() {
+	String.prototype.clone = function () {
 		
 		return this.slice(0);
 		
 	}
 
-	String.prototype.padToLengthWithPaddingString = function(destinationLength, paddingString) {
+	String.prototype.padToLengthWithPaddingString = function (destinationLength, paddingString) {
 	
 		if (!destinationLength) return this;
 		if (this.length >= destinationLength) return this;
@@ -45,7 +45,7 @@
 
 //	Formatting
 
-	Date.prototype.format = function(formatString) {
+	Date.prototype.format = function (formatString) {
 	
 		//	e.g. "#{MONTH} / #{DATE}  #{HOURS}:#{MINUTES}";
 		
@@ -76,7 +76,7 @@
 		
 		
 		
-		var parseDigitPredicate = function(inputString) {
+		var parseDigitPredicate = function (inputString) {
 		
 			if (!inputString) return undefined;
 			
@@ -100,7 +100,7 @@
 		var kjQueryEachLoopBreakingModeBreakLoop = false;
 		var kjQueryEachLoopBreakingModeContinueNextIteration = true;
 		
-		$.each(templates, function(templateItemKey, templateItemValue) {
+		$.each(templates, function (templateItemKey, templateItemValue) {
 		
 			var pattern = new RegExp("(#\\{)(" + templateItemKey + ")(?:, )?(?:\\d+)?(\\})", "ig");
 			var templateTagOccurrances = formatString.match(pattern);
@@ -108,7 +108,7 @@
 			if (!templateTagOccurrances)
 			return kjQueryEachLoopBreakingModeContinueNextIteration;
 			
-			$.each(templateTagOccurrances, function(templateTagOccurranceIndex, templateTagOccurrance) {
+			$.each(templateTagOccurrances, function (templateTagOccurranceIndex, templateTagOccurrance) {
 			
 				var templateItemOccurranceString = String(templateTagOccurrance);
 				
@@ -144,13 +144,13 @@
 
 //	Traversing in time
 
-	Date.prototype.getDayInMonth = function() {
+	Date.prototype.getDayInMonth = function () {
 		
 		return this.getDate();
 		
 	}
 
-	Date.prototype.nextDay = function() {
+	Date.prototype.nextDay = function () {
 	
 		return new Date((new Date(this)).setDate(parseInt(this.getDate()) + 1));
 	
@@ -162,7 +162,7 @@
 	
 	}
 	
-	Date.prototype.nextMonth = function() {
+	Date.prototype.nextMonth = function () {
 	
 		return new Date((new Date(this)).setMonth(parseInt(this.getMonth()) + 1));
 	
@@ -174,7 +174,7 @@
 	
 	}
 	
-	Date.prototype.nextYear = function() {
+	Date.prototype.nextYear = function () {
 	
 		return new Date((new Date(this)).setYear(parseInt(this.getYear()) + 1));
 	
@@ -186,37 +186,37 @@
 	
 	}
 	
-	Date.prototype.firstDayInMonth = function() {
+	Date.prototype.firstDayInMonth = function () {
 		
 		return new Date((new Date(this)).setDate(1));
 		
 	}
 	
-	Date.prototype.lastDayInMonth = function() {
+	Date.prototype.lastDayInMonth = function () {
 		
 		return this.nextMonth().firstDayInMonth().previousDay();
 		
 	}
 	
-	Date.prototype.firstMonthInYear = function() {
+	Date.prototype.firstMonthInYear = function () {
 		
 		return new Date(this.getUTCFullYear(), 0, this.getDate());
 		
 	}
 	
-	Date.prototype.lastMonthInYear = function() {
+	Date.prototype.lastMonthInYear = function () {
 		
 		return new Date(this.getUTCFullYear(), 11, this.getDate());
 		
 	}
 	
-	Date.prototype.firstDayInWeek = function() {
+	Date.prototype.firstDayInWeek = function () {
 		
 		return new Date(new Date(this).setDate(this.getDate() + (0 - this.getDay())));
 		
 	}
 	
-	Date.prototype.lastDayInWeek = function() {
+	Date.prototype.lastDayInWeek = function () {
 		
 		return new Date(new Date(this).setDate(this.getDate() + (6 - this.getDay())));
 		
@@ -233,13 +233,13 @@
 
 //	Date Names
 	
-	Date.prototype.getDateName = function() {
+	Date.prototype.getDateName = function () {
 		
 		return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][this.getDay()];
 		
 	}
 	
-	Date.prototype.getMonthName = function() {
+	Date.prototype.getMonthName = function () {
 		
 		return ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][this.getMonth()];
 		
@@ -320,7 +320,7 @@
 
 	//	Nota: the input timezone is offset already if the code below this line continues
 	
-		var timeZoneOffsetMultiplier = (function(offsetLiteral){
+		var timeZoneOffsetMultiplier = (function (offsetLiteral){
 				
 			switch (offsetLiteral) {
 			
@@ -371,7 +371,7 @@
 		
 		var workingDifferenceStore = 1;
 		
-		$.each(differenceProportionsFromMilliseconds, function(differenceLevel, differenceMultiplicator) {
+		$.each(differenceProportionsFromMilliseconds, function (differenceLevel, differenceMultiplicator) {
 		
 			workingDifferenceStore *= differenceMultiplicator;
 		
