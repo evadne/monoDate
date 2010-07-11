@@ -271,6 +271,44 @@
 
 
 
+//	Helper Methods
+
+
+
+
+
+	Date.millisecondsFromUnit = function (inUnitName) {
+	
+		var responseValue = 1;
+		var unitExists = false;
+	
+		$.each({
+		
+			"seconds": 1000,
+			"minutes": 60,
+			"hours": 60,
+			"days": 24,
+			"years": 365.25
+		
+		}, function (unitName, unitMultiplicator) {
+		
+			responseValue *= unitMultiplicator;			
+			if (unitName == inUnitName) {
+				
+				unitExists = true;
+				return false;
+				
+			}
+			
+		});
+		
+		if (!unitExists) return undefined;
+		return responseValue;
+	
+	}
+
+	
+
 //	Parsing & forming literals
 
 	Date.fromISO8601 = function (inString, dateStringContainsDateOnly) {
@@ -343,7 +381,7 @@
 
 
 
-//	Relative date
+//	Date Relativity
 
 	Date.prototype.relativeDate = function () {
 	
@@ -390,3 +428,44 @@
 		}
 
 	}
+	
+	
+	
+	
+	
+	Date.prototype.isInTheRecent = function (numberOfUnit, nameOfUnit) {
+	
+		return this.isInVicinity(numberOfUnit, nameOfUnit, 0, "milliseconds");
+	
+	}
+	
+	
+	
+	
+	
+	Date.prototype.isInTheFuture = function (numberOfUnit, nameOfUnit) {
+	
+		return this.isInVicinity(0, "milliseconds", numberOfUnit, nameOfUnit);
+	
+	}
+	
+	
+	
+	
+	
+	Date.prototype.isInVicinity = function (numberOfUnitInPast, nameOfUnitInPast, numberOfUnitInFuture, nameOfUnitInFuture) {
+	
+		var allowanceInPast = numberOfUnitInPast * (Date.millisecondsFromUnit(nameOfUnitInPast) || 0);
+		
+		var allowanceInFuture = -1 * numberOfUnitInFuture * (Date.millisecondsFromUnit(nameOfUnitInFuture) || 0);
+		
+		var nowInMilliseconds = (new Date()).getTime();
+		var comparedDateInMilliseconds = this.getTime();
+
+		return (allowanceInPast <= (nowInMilliseconds - comparedDateInMilliseconds) <= allowanceInFuture);
+	
+	}
+
+
+
+
