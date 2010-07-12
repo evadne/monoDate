@@ -18,7 +18,8 @@
 
 
 
-//	Formatting
+//	! 
+//	!Formatting
 
 	Date.prototype.format = function (formatString) {
 	
@@ -117,12 +118,8 @@
 
 
 
-
-
-
-
-
-//	Traversing in time
+//	! 
+//	!Traversing in time
 
 	Date.prototype.getDayInMonth = function () {
 		
@@ -206,12 +203,8 @@
 
 
 
-
-
-
-
-
-//	Date Names
+//	! 
+//	!Date Names
 	
 	Date.prototype.getDateName = function () {
 		
@@ -228,13 +221,9 @@
 	
 	
 	
-	
-	
-	
-	
-	
-	
-//	Missing Introspection Methods
+
+//	! 	
+//	!Introspection
 
 	Date.prototype.getWeek = function () {
 	
@@ -246,12 +235,8 @@
 
 
 
-
-
-
-
-
-//	Helper Methods
+//	! 
+//	!Helper
 
 
 	Date.millisecondsFromUnit = function (inUnitName) {
@@ -294,7 +279,15 @@
 
 	
 
-//	Parsing & forming literals
+
+
+
+
+
+
+
+//	! 
+//	!Parsing & forming ISO Strings
 
 	Date.prototype.toISO8601 = function () {
 	
@@ -377,7 +370,13 @@
 
 
 
-//	Date Relativity
+
+
+
+
+
+//	! 
+//	!Date Relativity
 
 	Date.prototype.relativeDate = function (inMagnitude) {
 	
@@ -437,6 +436,9 @@
 	
 	
 	
+
+//	! 
+//	!Presenting Relativity
 	
 	Date.prototype.isInTheRecent = function (numberOfUnit, nameOfUnit) {
 	
