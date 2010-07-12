@@ -1,38 +1,13 @@
 //	lib.mono.date.js
 //	Evadne Wu at Iridia, 2010
 
+//	This library works with monoString.
 
 
 
 
 
-
-
-
-
-//	Helpers
-
-	String.prototype.clone = function () {
-		
-		return this.slice(0);
-		
-	}
-
-	String.prototype.padToLengthWithPaddingString = function (destinationLength, paddingString) {
-	
-		if (!destinationLength) return this;
-		if (this.length >= destinationLength) return this;
-
-		if (!paddingString) paddingString = "0";
-	
-		var finalString = this.clone();
-	
-		for (var i = 0; i <= (destinationLength - this.length - 1); i++)
-		finalString = (paddingString + finalString);
-		
-		return finalString;
-		
-	}
+	mono.dateAdditions = true;
 
 
 
@@ -121,7 +96,7 @@
 				
 					templateItemOccurranceString,
 	
-					String(templateItemValue).padToLengthWithPaddingString(
+					String(templateItemValue).pad(
 					
 						parseDigitPredicate(templateItemOccurranceString), 
 						"0"
@@ -337,7 +312,7 @@
 			var timeZoneOffsetInMinutes = -1 * (new Date()).getTimezoneOffset();
 			var timeZoneSign = (timeZoneOffsetInMinutes < 0) ? "-" : "+";
 			
-			inString = inString + "T00:00:00.000" + timeZoneSign + String(Math.floor(timeZoneOffsetInMinutes / 60)).padToLengthWithPaddingString(2) + ":" + String((timeZoneOffsetInMinutes % 60)).padToLengthWithPaddingString(2)
+			inString = inString + "T00:00:00.000" + timeZoneSign + String(Math.floor(timeZoneOffsetInMinutes / 60)).pad(2) + ":" + String((timeZoneOffsetInMinutes % 60)).pad(2)
 		
 		}
 	
