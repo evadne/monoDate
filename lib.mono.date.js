@@ -57,7 +57,12 @@
 	
 			"HOURS": this.getHours(),
 			"MINUTES": this.getMinutes(),
-			"SECONDS": this.getSeconds()
+			"SECONDS": this.getSeconds(),
+			
+			"UTCHOURS": this.getUTCHours(),
+			"UTCMINUTES": this.getUTCMinutes(),
+			"UTCSECONDS": this.getUTCSeconds(),
+			"UTCMILLISECONDS": this.getUTCMilliseconds(),
 		
 		}
 		
@@ -274,9 +279,6 @@
 //	Helper Methods
 
 
-
-
-
 	Date.millisecondsFromUnit = function (inUnitName) {
 	
 		var responseValue = 1;
@@ -311,6 +313,13 @@
 
 //	Parsing & forming literals
 
+	Date.prototype.toISO8601 = function () {
+	
+		return this.format("#{YEAR, 2}-#{MONTH, 2}-#{DAY, 2}T#{UTCHOURS, 2}:#{UTCMINUTES, 2}:#{UTCSECONDS, 2}Z");
+	
+	}
+
+	
 	Date.fromISO8601 = function (inString, dateStringContainsDateOnly) {
 	
 	//	ISO 8601: "2010-07-10T16:00:00.000+08:00"
@@ -349,10 +358,10 @@
 		var timeMatches = dateString.match(timePattern);
 		if (timeMatches == null) return dateObject;
 		
-		dateObject.setUTCHours(parseInt(timeMatches[1]));
-		dateObject.setUTCMinutes(parseInt(timeMatches[2]));
-		dateObject.setUTCSeconds(parseInt(timeMatches[3]));
-		dateObject.setUTCMilliseconds(parseFloat(timeMatches[4]));
+		dateObject.setUTCHours(parseInt(timeMatches[1]) || 0);
+		dateObject.setUTCMinutes(parseInt(timeMatches[2]) || 0);
+		dateObject.setUTCSeconds(parseInt(timeMatches[3]) || 0);
+		dateObject.setUTCMilliseconds(parseFloat(timeMatches[4]) || 0);
 		
 		var timeZoneOffsetMatches = dateString.match(timeZoneOffsetPattern);
 		
