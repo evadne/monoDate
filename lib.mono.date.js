@@ -476,14 +476,18 @@
 	
 	Date.prototype.isInVicinity = function (numberOfUnitInPast, nameOfUnitInPast, numberOfUnitInFuture, nameOfUnitInFuture) {
 	
-		var allowanceInPast = numberOfUnitInPast * (Date.millisecondsFromUnit(nameOfUnitInPast) || 0);
-		
-		var allowanceInFuture = -1 * numberOfUnitInFuture * (Date.millisecondsFromUnit(nameOfUnitInFuture) || 0);
-		
+		numberOfUnitInFuture = numberOfUnitInFuture || numberOfUnitInPast;
+		nameOfUnitInFuture = nameOfUnitInFuture || nameOfUnitInPast;
+	
 		var nowInMilliseconds = (new Date()).getTime();
+	
+		var allowancePast = nowInMilliseconds - numberOfUnitInPast * (Date.millisecondsFromUnit(nameOfUnitInPast) || 0);
+		
+		var allowanceFuture = nowInMilliseconds + numberOfUnitInFuture * (Date.millisecondsFromUnit(nameOfUnitInFuture) || 0);
+		
 		var comparedDateInMilliseconds = this.getTime();
-
-		return (allowanceInPast <= (nowInMilliseconds - comparedDateInMilliseconds) <= allowanceInFuture);
+		
+		return ((allowancePast <= comparedDateInMilliseconds) && (comparedDateInMilliseconds <= allowanceFuture));
 	
 	}
 
