@@ -13,11 +13,6 @@
 
 
 
-
-
-
-
-
 //	! 
 //	!Formatting
 
@@ -277,11 +272,6 @@
 	
 	}
 
-	
-
-
-
-
 
 
 
@@ -300,17 +290,30 @@
 	
 	//	ISO 8601: "2010-07-10T16:00:00.000+08:00"
 	
+		
+		var dateString = String(inString);
+	
 		if (dateStringContainsDateOnly) {
 		
-			var timeZoneOffsetInMinutes = -1 * (new Date()).getTimezoneOffset();
-			var timeZoneSign = (timeZoneOffsetInMinutes < 0) ? "-" : "+";
+			var timeZoneOffset = -1 * (new Date()).getTimezoneOffset();
 			
-			inString = inString + "T00:00:00.000" + timeZoneSign + String(Math.floor(timeZoneOffsetInMinutes / 60)).pad(2) + ":" + String((timeZoneOffsetInMinutes % 60)).pad(2)
+			var timeZoneOffsetMinutes = String(Math.floor(timeZoneOffset / 60)).pad(2);
+			
+			var timeZoneOffsetHours = String((timeZoneOffset % 60)).pad(2);
+			
+			dateString = dateString + [
+			
+				"T00:00:00.000",
+				
+				((timeZoneOffsetInMinutes < 0) ? "-" : "+"),
+				timeZoneOffsetMinutes, ":", timeZoneOffsetHours
+			
+			].join("");
 		
 		}
-	
-		var dateString = String(inString);
-		var dateObject = Date.parse(inString);
+		
+		
+		var dateObject = Date.parse(dateString);
 		if (isNaN(dateObject)) dateObject = new Date();
 		
 		var datePattern = /(\d{4})-?(\d{2})-?(\d{2})/;
@@ -339,6 +342,7 @@
 		dateObject.setUTCSeconds(parseInt(timeMatches[3]) || 0);
 		dateObject.setUTCMilliseconds(parseFloat(timeMatches[4]) || 0);
 		
+		
 		var timeZoneOffsetMatches = dateString.match(timeZoneOffsetPattern);
 		
 		if (timeZoneOffsetMatches == null) return dateObject;
@@ -349,27 +353,19 @@
 	
 		var timeZoneOffsetMultiplier = (function (offsetLiteral){
 				
-			switch (offsetLiteral) {
+			if (offsetLiteral == "+") return 1;
+			if (offsetLiteral == "-") return -1;
 			
-				case "+": return 1; break;
-				case "-": return -1; break;
-				default: return 0; break;
-				
-			}
+			return 0;
 		
 		})(timeZoneOffsetMatches[1]);
 		
 		var localTimeZoneOffsetInMinutes = dateObject.getTimezoneOffset();
 		var inDateTimeZoneOffsetInMinutes = parseInt(timeMatches[2]) * 60 + parseInt(timeMatches[3]);
 	
-		return new Date(Number(dateObject) - (inDateTimeZoneOffsetInMinutes - localTimeZoneOffsetInMinutes) * (60 * 1000));
+		return new Date(Number(dateObject) - (inDateTimeZoneOffsetInMinutes - localTimeZoneOffsetInMinutes) * Date.millisecondsFromUnit("minutes"));
 		
 	}
-
-
-
-
-
 
 
 
@@ -588,3 +584,7 @@
 		return theResponse;
 	
 	}
+
+
+
+
