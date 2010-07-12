@@ -181,13 +181,13 @@
 	
 	Date.prototype.nextYear = function () {
 	
-		return new Date((new Date(this)).setYear(parseInt(this.getYear()) + 1));
+		return new Date((new Date(this)).setUTCFullYear(parseInt(this.getUTCFullYear()) + 1));
 	
 	}
 
 	Date.prototype.previousYear = function () {
 	
-		return new Date((new Date(this)).setYear(parseInt(this.getYear()) - 1));
+		return new Date((new Date(this)).setUTCFullYear(parseInt(this.getUTCFullYear()) - 1));
 	
 	}
 	
