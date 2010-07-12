@@ -503,3 +503,111 @@
 
 
 
+
+//	Localized Relative Date
+
+	Date.prototype.relativeDateLocalized = function (inMagnitude) {
+	
+		var relativeDate = this.relativeDate(inMagnitude);
+		
+		var inUnit = relativeDate.differenceUnit;
+		var inDifference = relativeDate.differenceValue;
+		
+		var templates = {
+		
+			"DIFFERENCE_NUMBER": Math.abs(inDifference)
+		
+		};
+		
+		var localizationTransforms = {
+		
+			"days": {
+			
+				"< -1": "#{DIFFERENCE_NUMBER} days ago",
+				"== -1": "Yesterday",
+				"== 0": "Today",
+				"== 1": "Tomorrow",
+				"== 2": "The day after tomorrow",
+				"> 2": "#{DIFFERENCE_NUMBER} days after"
+			
+			},
+			
+			"weeks": {
+			
+				"< -1": "#{DIFFERENCE_NUMBER} weeks ago",
+				"== -1": "last week",
+				"== 0": "this week",
+				"== 1": "next week",
+				"> 1": "#{DIFFERENCE_NUMBER} weeks after"
+			
+			},
+			
+			"years": {
+			
+				"< -1": "#{DIFFERENCE_NUMBER} years ago",
+				"== -1": "last year",
+				"== 0": "this year",
+				"== 1": "next year",
+				"> 1": "#{DIFFERENCE_NUMBER} years after"
+			
+			}
+		
+		}
+		
+		
+		
+		
+		
+		if (!localizationTransforms.hasOwnProperty(inUnit)) {
+		
+			mono.info("Difference unit is not templted, returning undefined");
+			return undefined;
+		
+		}
+		
+		inDifference = parseInt(inDifference);
+		if (isNaN(inDifference)) {
+		
+			mono.info("Difference is not a number, returning undefined");
+			return undefined;
+			
+		}
+		
+		
+		var theResponse = undefined;
+		
+		$.each(localizationTransforms[inUnit], function (conditionLiteral, responseString) {
+		
+			if (!eval(inDifference + conditionLiteral)) return true;
+			
+			theResponse = responseString;
+			
+			$.each(templates, function (templateItemKey, templateItemValue) {
+		
+				var pattern = new RegExp("(#\\{)(" + templateItemKey + ")(?:, )?(?:\\d+)?(\\})", "ig");
+				var templateTagOccurrances = theResponse.match(pattern);
+				
+				if (templateTagOccurrances == null) return false;
+				
+				$.each(templateTagOccurrances, function (templateTagOccurranceIndex, templateTagOccurrance) {
+			
+					var templateItemOccurranceString = String(templateTagOccurrance);
+					
+					theResponse = theResponse.replace(
+					
+						templateItemOccurranceString,
+						templateItemValue
+						
+					);
+						
+				});
+			
+			});
+			
+			return false;
+		
+		});
+		
+		return theResponse;
+	
+	}
