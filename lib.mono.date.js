@@ -330,10 +330,12 @@
 		
 		var datePattern = /(\d{4})-?(\d{2})-?(\d{2})/;
 		var timePattern = /(\d{2}):?(\d{2}):?(\d{2})(\.\d+)?/;
-		var timeZoneOffsetPattern = /(Z|\+|-)(\d{2}):?(\d{2})/;
+		var timeZoneOffsetPattern = /Z|(?:(\+|-)(\d{2}):?(\d{2}))/;
 		
 		var dateStringPattern = new RegExp(datePattern.source + "T?" + timePattern.source + timeZoneOffsetPattern.source + "?");
+		
 		if (dateString.match(dateStringPattern) == null) return undefined;
+				
 		
 		var dateMatches = dateString.match(datePattern);
 		if (dateMatches == null) return dateObject;
@@ -353,7 +355,9 @@
 		dateObject.setUTCMilliseconds(parseFloat(timeMatches[4]));
 		
 		var timeZoneOffsetMatches = dateString.match(timeZoneOffsetPattern);
+		
 		if (timeZoneOffsetMatches == null) return dateObject;
+		if (timeZoneOffsetMatches[0] == "Z") return dateObject;
 
 
 	//	Nota: the input timezone is offset already if the code below this line continues
