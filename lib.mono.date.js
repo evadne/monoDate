@@ -281,18 +281,26 @@
 
 	Date.millisecondsFromUnit = function (inUnitName) {
 	
+		if (inUnitName == "weeks") {
+		
+			return Date.millisecondsFromUnit("days") * 7;
+		
+		}
+		
 		var responseValue = 1;
 		var unitExists = false;
-	
-		$.each({
+		
+		var unitMultiplicatorValues = {
 		
 			"seconds": 1000,
 			"minutes": 60,
 			"hours": 60,
 			"days": 24,
-			"years": 365.25
+			"years": 365
 		
-		}, function (unitName, unitMultiplicator) {
+		};
+	
+		$.each(unitMultiplicatorValues, function (unitName, unitMultiplicator) {
 		
 			responseValue *= unitMultiplicator;			
 			if (unitName == inUnitName) {
