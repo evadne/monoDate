@@ -404,49 +404,58 @@
 
 //	Date Relativity
 
-	Date.prototype.relativeDate = function () {
+	Date.prototype.relativeDate = function (inMagnitude) {
 	
 		var nowInMilliseconds = (new Date()).getTime();
 		var recentDateInMilliseconds = this.getTime();
 		
 		var dateDifferenceInMilliseconds = recentDateInMilliseconds - nowInMilliseconds;
 		
-		var dateIsEarlier = (dateDifferenceInMilliseconds < 0);
+		var dateIsEarlier = (dateDifferenceInMilliseconds < 0) ? true : false;
 		dateDifferenceInMilliseconds = Math.abs(dateDifferenceInMilliseconds);
 		
-		var differenceProportionsFromMilliseconds = {
+		var differenceProportionsFromMilliseconds = {};
 		
-			"seconds": 1000,
-			"minutes": 60,
-			"hours": 60,
-			"days": 24,
-			"years": 365.25
+		$.each(["milliseconds", "seconds", "minutes", "hours", "days", "weeks", "years"], function (inUnitIndex, inUnitName) {
+		
+			differenceProportionsFromMilliseconds[inUnitName] = Date.millisecondsFromUnit(inUnitName);
+		
+		});
+		
+		
+		//	Find the appropriate magnitude	
+		
+		if (differenceProportionsFromMilliseconds.hasOwnProperty(inMagnitude)) {
+		
+			finalDateDifferenceMagnitude = inMagnitude;
+			
+		} else {
+			
+			$.each(differenceProportionsFromMilliseconds, function (differenceLevel, differenceMultiplicator) {
+					
+				if (Math.floor(dateDifferenceInMilliseconds / differenceMultiplicator) < 1) return false;
+				
+				finalDateDifferenceMagnitude = differenceLevel;
+				
+			});
+		
+		}
+		
+	
+	
+	//	Calculate and return
+		
+		var finalDifferenceLevelValue = differenceProportionsFromMilliseconds[finalDateDifferenceMagnitude];
+		
+		var finalDifferenceValue = (dateIsEarlier ? -1 : 1) * Math.floor(Math.abs(dateDifferenceInMilliseconds) / finalDifferenceLevelValue);
+		
+		
+		return {
+	
+			"differenceUnit": finalDateDifferenceMagnitude,
+			"differenceValue": finalDifferenceValue
 		
 		};
-		
-		var finalDateDifferenceMagnitude = "milliseconds";
-		var finalDateDifferenceValue = dateDifferenceInMilliseconds;
-		var finalDateDifferenceValueMultiplicator = (dateIsEarlier ? -1 : 1);
-		
-		var workingDifferenceStore = 1;
-		
-		$.each(differenceProportionsFromMilliseconds, function (differenceLevel, differenceMultiplicator) {
-		
-			workingDifferenceStore *= differenceMultiplicator;
-		
-			if (Math.floor(dateDifferenceInMilliseconds / workingDifferenceStore) < 1) return;
-			
-			finalDateDifferenceMagnitude = differenceLevel;
-			
-			finalDateDifferenceValue = (dateDifferenceInMilliseconds / workingDifferenceStore);
-			
-		});
-				
-		return {
-		
-			"differenceUnit": finalDateDifferenceMagnitude,
-			"differenceValue": finalDateDifferenceValueMultiplicator * Math.floor(finalDateDifferenceValue)
-		}
 
 	}
 	
