@@ -287,10 +287,9 @@
 
 	
 	Date.fromISO8601 = function (inString, dateStringContainsDateOnly) {
-	
+		
 	//	ISO 8601: "2010-07-10T16:00:00.000+08:00"
 	
-		
 		var dateString = String(inString);
 	
 		if (dateStringContainsDateOnly) {
@@ -305,11 +304,11 @@
 			
 				"T00:00:00.000",
 				
-				((timeZoneOffsetInMinutes < 0) ? "-" : "+"),
+				((timeZoneOffsetMinutes < 0) ? "-" : "+"),
 				timeZoneOffsetMinutes, ":", timeZoneOffsetHours
 			
 			].join("");
-		
+			
 		}
 		
 		
@@ -318,11 +317,22 @@
 		
 		var datePattern = /(\d{4})-?(\d{2})-?(\d{2})/;
 		var timePattern = /(\d{2}):?(\d{2}):?(\d{2})(\.\d+)?/;
-		var timeZoneOffsetPattern = /Z|(?:(\+|-)(\d{2}):?(\d{2}))/;
+		var timeZoneOffsetPattern = /(?:Z|(?:(\+|-)(\d{2}):?(\d{2})))/;
 		
 		var dateStringPattern = new RegExp(datePattern.source + "T?" + timePattern.source + timeZoneOffsetPattern.source + "?");
+				
+		if (dateString.match(dateStringPattern) == null) {
 		
-		if (dateString.match(dateStringPattern) == null) return undefined;
+			return undefined;
+			
+		}
+		
+		if (dateString.match(dateStringPattern)[0] == "") {
+		
+			return undefined;
+		
+		}
+		
 				
 		
 		var dateMatches = dateString.match(datePattern);
@@ -330,17 +340,17 @@
 		
 		dateObject.setUTCDate(1);
 		dateObject.setUTCFullYear(parseInt(dateMatches[1], 10));
-		dateObject.setUTCMonth(parseInt(dateMatches[2]) - 1);
-		dateObject.setUTCDate(parseInt(dateMatches[3]));
+		dateObject.setUTCMonth(parseInt(dateMatches[2], 10) - 1);
+		dateObject.setUTCDate(parseInt(dateMatches[3], 10));
 		
 		
 		var timeMatches = dateString.match(timePattern);
 		if (timeMatches == null) return dateObject;
 		
-		dateObject.setUTCHours(parseInt(timeMatches[1]) || 0);
-		dateObject.setUTCMinutes(parseInt(timeMatches[2]) || 0);
-		dateObject.setUTCSeconds(parseInt(timeMatches[3]) || 0);
-		dateObject.setUTCMilliseconds(parseFloat(timeMatches[4]) || 0);
+		dateObject.setUTCHours(parseInt(timeMatches[1], 10) || 0);
+		dateObject.setUTCMinutes(parseInt(timeMatches[2], 10) || 0);
+		dateObject.setUTCSeconds(parseInt(timeMatches[3], 10) || 0);
+		dateObject.setUTCMilliseconds(parseFloat(timeMatches[4], 10) || 0);
 		
 		
 		var timeZoneOffsetMatches = dateString.match(timeZoneOffsetPattern);
@@ -362,7 +372,7 @@
 		
 		var localTimeZoneOffsetInMinutes = dateObject.getTimezoneOffset();
 		var inDateTimeZoneOffsetInMinutes = parseInt(timeMatches[2]) * 60 + parseInt(timeMatches[3]);
-	
+			
 		return new Date(Number(dateObject) - (inDateTimeZoneOffsetInMinutes - localTimeZoneOffsetInMinutes) * Date.millisecondsFromUnit("minutes"));
 		
 	}
