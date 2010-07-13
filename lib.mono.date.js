@@ -509,7 +509,7 @@
 		
 			if ((iridia === undefined) || !iridia.hasOwnProperty("localizedString")) {
 			
-				return function (inStringKey, inDefaultString) {
+				return function (inScope, inStringKey, inDefaultString) {
 			
 					return inDefaultString;				
 				
@@ -517,9 +517,9 @@
 
 			} else {
 						
-				return function (inStringKey, inDefaultString) {
+				return function (inScope, inStringKey, inDefaultString) {
 				
-					return iridia.localizedString.stringForKey("mono.date.relativeDate", inStringKey) || (inDefaultString || "");
+					return iridia.localizedString.stringForKey("mono.date.relativeDate" + (inScope === undefined ? "" : ("." + String(inScope))), inStringKey) || (inDefaultString || "");
 				
 				}
 				
@@ -527,12 +527,15 @@
 		
 		})();
 		
+		
+		//	These strings are localized under mono.date.relativeDate.{scope} but we do not transform them now.  We do that later on-demand.
+		
 		var localizationTransforms = {
 		
 			"days": {
 			
-				"< -2": LS("< -2", "#{DIFFERENCE_NUMBER} days ago"),
-				"== -2": LS("== -2", "#{DIFFERENCE_NUMBER} days ago"),
+				"< -2": "#{DIFFERENCE_NUMBER} days ago",
+				"== -2": "#{DIFFERENCE_NUMBER} days ago",
 				"== -1": "Yesterday",
 				"== 0": "Today",
 				"== 1": "Tomorrow",
@@ -543,21 +546,25 @@
 			
 			"weeks": {
 			
-				"< -1": "#{DIFFERENCE_NUMBER} weeks ago",
+				"< -2": "#{DIFFERENCE_NUMBER} days ago",
+				"== -2": "#{DIFFERENCE_NUMBER} weeks ago",
 				"== -1": "last week",
 				"== 0": "this week",
 				"== 1": "next week",
-				"> 1": "#{DIFFERENCE_NUMBER} weeks after"
+				"== 2": "#{DIFFERENCE_NUMBER} weeks after",
+				"> 2": "#{DIFFERENCE_NUMBER} weeks after"
 			
 			},
 			
 			"years": {
-			
-				"< -1": "#{DIFFERENCE_NUMBER} years ago",
+				
+				"< -2": "#{DIFFERENCE_NUMBER} years ago",
+				"== -2": "#{DIFFERENCE_NUMBER} years ago",
 				"== -1": "last year",
 				"== 0": "this year",
 				"== 1": "next year",
-				"> 1": "#{DIFFERENCE_NUMBER} years after"
+				"== 2": "#{DIFFERENCE_NUMBER} years after",
+				"> 2": "#{DIFFERENCE_NUMBER} years after"
 			
 			}
 		
@@ -588,8 +595,11 @@
 		$.each(localizationTransforms[inUnit], function (conditionLiteral, responseString) {
 		
 			if (!eval(inDifference + conditionLiteral)) return true;
+
+		
+		//	We do the localization till this very end to prevent unnecessary work
 			
-			theResponse = responseString;
+			theResponse = LS(inUnit, conditionLiteral, responseString);
 						
 			
 			$.each(templates, function (templateItemKey, templateItemValue) {
