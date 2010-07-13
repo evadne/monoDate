@@ -23,9 +23,9 @@
 
 
 
-##	Known Issues
+##	Known Issues and Tips
 
-This formatter eats your hashes and curly braces.
+This formatter eats your hashes and curly braces.  Also, to have localized strings work, load an optional dependency `iridia.localizedStrings`.
 
 
 

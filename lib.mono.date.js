@@ -501,12 +501,38 @@
 			"DIFFERENCE_NUMBER": Math.abs(inDifference)
 		
 		};
+	
+		
+	//	Localizd String	
+
+		var LS = (function () {
+		
+			if ((iridia === undefined) || !iridia.hasOwnProperty("localizedString")) {
+			
+				return function (inStringKey, inDefaultString) {
+			
+					return inDefaultString;				
+				
+				}
+
+			} else {
+						
+				return function (inStringKey, inDefaultString) {
+				
+					return iridia.localizedString.stringForKey("mono.date.relativeDate", inStringKey) || (inDefaultString || "");
+				
+				}
+				
+			}
+		
+		})();
 		
 		var localizationTransforms = {
 		
 			"days": {
 			
-				"< -1": "#{DIFFERENCE_NUMBER} days ago",
+				"< -2": LS("< -2", "#{DIFFERENCE_NUMBER} days ago"),
+				"== -2": LS("== -2", "#{DIFFERENCE_NUMBER} days ago"),
 				"== -1": "Yesterday",
 				"== 0": "Today",
 				"== 1": "Tomorrow",
@@ -564,6 +590,7 @@
 			if (!eval(inDifference + conditionLiteral)) return true;
 			
 			theResponse = responseString;
+						
 			
 			$.each(templates, function (templateItemKey, templateItemValue) {
 		
