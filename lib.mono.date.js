@@ -254,11 +254,9 @@
 
 	Date.millisecondsFromUnit = function (inUnitName) {
 	
-		if (inUnitName == "weeks") {
+		if (inUnitName == "weeks")
+		return Date.millisecondsFromUnit("days") * 7;
 		
-			return Date.millisecondsFromUnit("days") * 7;
-		
-		}
 		
 		var responseValue = 1;
 		var unitExists = false;
@@ -272,15 +270,17 @@
 			"years": 365
 		
 		};
-	
+		
+		
 		$.each(unitMultiplicatorValues, function (unitName, unitMultiplicator) {
 		
 			responseValue *= unitMultiplicator;			
+
 			if (unitName == inUnitName) {
-				
+
 				unitExists = true;
 				return false;
-				
+			
 			}
 			
 		});
@@ -339,18 +339,11 @@
 		
 		var dateStringPattern = new RegExp(datePattern.source + "T?" + timePattern.source + timeZoneOffsetPattern.source + "?");
 				
-		if (dateString.match(dateStringPattern) == null) {
+		if (dateString.match(dateStringPattern) == null)		
+		return undefined;
 		
-			return undefined;
-			
-		}
-		
-		if (dateString.match(dateStringPattern)[0] == "") {
-		
-			return undefined;
-		
-		}
-		
+		if (dateString.match(dateStringPattern)[0] == "")
+		return undefined;		
 				
 		
 		var dateMatches = dateString.match(datePattern);
@@ -389,9 +382,10 @@
 		})(timeZoneOffsetMatches[1]);
 		
 		var localTimeZoneOffsetInMinutes = dateObject.getTimezoneOffset();
-		var inDateTimeZoneOffsetInMinutes = parseInt(timeMatches[2]) * 60 + parseInt(timeMatches[3]);
+		var inDateTimeZoneOffsetInMinutes = parseInt(timeMatches[2], 10) * 60 + parseInt(timeMatches[3], 10);
 			
 		return new Date(Number(dateObject) - (inDateTimeZoneOffsetInMinutes - localTimeZoneOffsetInMinutes) * Date.millisecondsFromUnit("minutes"));
+		
 		
 	}
 
@@ -431,15 +425,11 @@
 		
 		switch (inMagnitude) {
 		
-			case "years": 
-			
-				return makeResponse("years", 
+			case "years": return makeResponse("years", 
 				
-					now.getUTCFullYear() - this.getUTCFullYear()
+				now.getUTCFullYear() - this.getUTCFullYear()
 					
-				);
-				
-				break;
+			); break;
 				
 			case "months":
 			
@@ -559,7 +549,7 @@
 	Date.prototype.relativeDateLocalized = function (inMagnitude) {
 	
 	
-	//	Decoration.  Some magnitudes are merely “decorated”, e.g. the weekdays are “decorated” weeks
+	//	Decoration.  Some magnitudes are merely “decorated”, e.g. the weekdays are “decorated” weeks.  We use hashes because if the key does not exist in a hash the query will return undefined and the guard takes place.
 	
 		var relativeDate = this.relativeDate({
 		
@@ -658,27 +648,20 @@
 		
 		
 		
-		if (!localizationTransforms.hasOwnProperty(inUnit)) {
-		
-			mono.info("Difference unit is not templted, returning undefined");
-			return undefined;
-		
-		}
+		if (!localizationTransforms.hasOwnProperty(inUnit))
+		return undefined;
 		
 		inDifference = parseInt(inDifference);
-		if (isNaN(inDifference)) {
-		
-			mono.info("Difference is not a number, returning undefined");
-			return undefined;
+		if (isNaN(inDifference))
+		return undefined;
 			
-		}
-		
 		
 		var theResponse = undefined;
 		
 		$.each(localizationTransforms[inUnit], function (conditionLiteral, responseString) {
 		
-			if (!eval(inDifference + conditionLiteral)) return true;
+			if (!eval(inDifference + conditionLiteral))
+			return true;
 
 		
 		//	We do the localization till this very end to prevent unnecessary work
@@ -688,17 +671,17 @@
 			$.each(templates, function (templateItemKey, templateItemValue) {
 			
 				var pattern = new RegExp("(#\\{)(" + templateItemKey + ")(?:, )?(?:\\d+)?(\\})", "ig");
+				
 				var templateTagOccurrances = theResponse.match(pattern);
 				
-				if (templateTagOccurrances == null) return true;
+				if (templateTagOccurrances == null)
+				return true;
 				
 				$.each(templateTagOccurrances, function (templateTagOccurranceIndex, templateTagOccurrance) {
 			
-					var templateItemOccurranceString = String(templateTagOccurrance);
-					
 					theResponse = theResponse.replace(
 					
-						templateItemOccurranceString,
+						String(templateTagOccurrance),
 						templateItemValue
 						
 					);
@@ -730,22 +713,18 @@
 
 	"_irLocalizedString": (function () {
 		
-		if ((iridia === undefined) || !iridia.hasOwnProperty("localizedString")) {
+		if (iridia && iridia.localizedString && iridia.localizedString.stringForKey)
+		return function (inCategory, inScope, inStringKey, inDefaultString) {
+			
+			return iridia.localizedString.stringForKey(("mono.date." + String(inCategory) + "." + String(inScope)), String(inStringKey)) || (inDefaultString || "");
 		
-			return function (inCategory, inScope, inStringKey, inDefaultString) {
+		};
 		
-				return inDefaultString;				
-			
-			}
-
-		} else {
-					
-			return function (inCategory, inScope, inStringKey, inDefaultString) {
-			
-				return iridia.localizedString.stringForKey(("mono.date." + String(inCategory) + "." + String(inScope)), String(inStringKey)) || (inDefaultString || "");
-			
-			}
-			
+		
+		return function (inCategory, inScope, inStringKey, inDefaultString) {
+	
+			return inDefaultString;				
+		
 		}
 	
 	})()
