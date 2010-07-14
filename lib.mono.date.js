@@ -570,7 +570,7 @@
 			"DIFFERENCE_VALUE": Math.abs(inDifference),
 
 			"WEEKDAY_NAME": this.getWeekdayName(),
-			"DIFFERENCE_IN_WEEKS": this.relativeDate("weeks").differenceValue
+			"DIFFERENCE_IN_WEEKS": Math.abs(this.relativeDate("weeks").differenceValue)
 		
 		};
 	
