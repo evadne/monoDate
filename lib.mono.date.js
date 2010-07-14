@@ -680,7 +680,7 @@
 				var pattern = new RegExp("(#\\{)(" + templateItemKey + ")(?:, )?(?:\\d+)?(\\})", "ig");
 				var templateTagOccurrances = theResponse.match(pattern);
 				
-				if (templateTagOccurrances == null) return false;
+				if (templateTagOccurrances == null) return true;
 				
 				$.each(templateTagOccurrances, function (templateTagOccurranceIndex, templateTagOccurrance) {
 			
