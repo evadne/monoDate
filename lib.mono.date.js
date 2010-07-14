@@ -500,6 +500,9 @@
 		
 			"DIFFERENCE_VALUE": Math.abs(inDifference),
 		
+			"WEEKDAY_NAME": "FIXME: Weekday Name",
+			"DIFFERENCE_IN_WEEKS": this.relativeDate("weeks").differenceValue
+		
 		};
 	
 		
@@ -553,6 +556,28 @@
 				"== 1": "next week",
 				"== 2": "#{DIFFERENCE_VALUE} weeks after",
 				"> 2": "#{DIFFERENCE_VALUE} weeks after"
+			
+			},
+			
+			"weekdays": {
+			
+				"< -1": "the #{WEEKDAY_NAME} #{DIFFERENCE_IN_WEEKS} weeks ago",
+				"== -1": "last #{WEEKDAY_NAME}",
+				"== 0": "this #{WEEKDAY_NAME}",
+				"== 1": "next #{WEEKDAY_NAME}",
+				"> 1": "the #{WEEKDAY_NAME} #{DIFFERENCE_IN_WEEKS} weeks after"
+			
+			},
+			
+			"months": {
+			
+				"< -2": "#{DIFFERENCE_VALUE} months ago",
+				"== -2": "#{DIFFERENCE_VALUE} months ago",
+				"== -1": "last month",
+				"== 0": "this month",
+				"== 1": "next month",
+				"== 2": "#{DIFFERENCE_VALUE} months after",
+				"> 2": "#{DIFFERENCE_VALUE} months after"
 			
 			},
 			
