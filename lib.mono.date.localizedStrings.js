@@ -25,6 +25,18 @@
 	
 	iridia.localizedString.registerStrings("mono.date.relativeDate.weeks", "zh-TW", {
 	
+		"< -2": "#{DIFFERENCE_VALUE} 星期前",
+		"== -2": "兩週前",
+		"== -1": "上週",
+		"== 0": "本週",
+		"== 1": "下週",
+		"== 2": "兩週後",
+		"> 2": "#{DIFFERENCE_VALUE} 星期後"
+	
+	});
+	
+	iridia.localizedString.registerStrings("mono.date.relativeDate.months", "zh-TW", {
+	
 		"< -2": "#{DIFFERENCE_VALUE} 個月前",
 		"== -2": "兩個月前",
 		"== -1": "上個月",
