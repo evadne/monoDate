@@ -539,15 +539,27 @@
 
 	Date.prototype.relativeDateLocalized = function (inMagnitude) {
 	
-		var relativeDate = this.relativeDate(inMagnitude);
+	
+	//	Decoration.  Some magnitudes are merely “decorated”, e.g. the weekdays are “decorated” weeks
+	
+		var relativeDate = this.relativeDate({
 		
-		var inUnit = relativeDate.differenceUnit;
+			"weekdays": "weeks"
+			
+		}[inMagnitude] || inMagnitude);
+		
+		var inUnit = ({
+		
+			"weekdays": "weekdays"
+			
+		}[inMagnitude] || relativeDate.differenceUnit);
+		
 		var inDifference = relativeDate.differenceValue;
 		
 		var templates = {
 		
 			"DIFFERENCE_VALUE": Math.abs(inDifference),
-		
+
 			"WEEKDAY_NAME": "FIXME: Weekday Name",
 			"DIFFERENCE_IN_WEEKS": this.relativeDate("weeks").differenceValue
 		
@@ -673,10 +685,9 @@
 		//	We do the localization till this very end to prevent unnecessary work
 			
 			theResponse = LS(inUnit, conditionLiteral, responseString);
-						
 			
 			$.each(templates, function (templateItemKey, templateItemValue) {
-		
+			
 				var pattern = new RegExp("(#\\{)(" + templateItemKey + ")(?:, )?(?:\\d+)?(\\})", "ig");
 				var templateTagOccurrances = theResponse.match(pattern);
 				
