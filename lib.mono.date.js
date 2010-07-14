@@ -711,23 +711,18 @@
 //! 
 //!	Presets Capture
 
-	"_irLocalizedString": (function () {
+	"_irLocalizedString": function (inCategory, inScope, inStringKey, inDefaultString) {
 		
-		if (iridia && iridia.localizedString && iridia.localizedString.stringForKey)
-		return function (inCategory, inScope, inStringKey, inDefaultString) {
-			
-			return iridia.localizedString.stringForKey(("mono.date." + String(inCategory) + "." + String(inScope)), String(inStringKey)) || (inDefaultString || "");
+		if ((iridia && iridia.localizedString && iridia.localizedString.stringForKey || undefined) === undefined) return inDefaultString;
 		
-		};
+		return iridia.localizedString.stringForKey(
 		
+			["mono", "date", String(inCategory), String(inScope)].join("."),
+			String(inStringKey)
 		
-		return function (inCategory, inScope, inStringKey, inDefaultString) {
-	
-			return inDefaultString;				
-		
-		}
-	
-	})()
+		) || (inDefaultString || "");
+
+	}
 
 });
 
