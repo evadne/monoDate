@@ -1,13 +1,29 @@
 //	lib.mono.date.js
 //	Evadne Wu at Iridia, 2010
 
-//	This library works with monoString.
+//	This library works with monoString.  We use an anonymous function to wrap everything so as to hide the code that sniffs for irLocalizedString.
 
 
 
 
 
 	mono.dateAdditions = true;
+
+
+
+
+
+(function (presets) {
+
+//! 
+//!	Presets Declaration
+
+	var _irLocalizedString = presets._irLocalizedString;
+
+
+
+
+
 
 
 
@@ -200,7 +216,7 @@
 
 //	! 
 //	!Date Names
-	
+
 	Date.prototype.getDateName = function () {
 		
 		return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][this.getDay()];
@@ -211,6 +227,12 @@
 		
 		return ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][this.getMonth()];
 		
+	}
+	
+	Date.prototype.getWeekdayName = function () {
+	
+		return _irLocalizedString("names", "weekdays", this.getDay()) || ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][this.getDay()];
+	
 	}
 	
 	
@@ -535,7 +557,8 @@
 
 
 
-//	Localized Relative Date
+//	! 
+//	!Localized Relative Date
 
 	Date.prototype.relativeDateLocalized = function (inMagnitude) {
 	
@@ -560,35 +583,15 @@
 		
 			"DIFFERENCE_VALUE": Math.abs(inDifference),
 
-			"WEEKDAY_NAME": "FIXME: Weekday Name",
+			"WEEKDAY_NAME": this.getWeekdayName(),
 			"DIFFERENCE_IN_WEEKS": this.relativeDate("weeks").differenceValue
 		
 		};
 	
 		
-	//	Localizd String	
+	//	Localized String	
 
-		var LS = (function () {
 		
-			if ((iridia === undefined) || !iridia.hasOwnProperty("localizedString")) {
-			
-				return function (inScope, inStringKey, inDefaultString) {
-			
-					return inDefaultString;				
-				
-				}
-
-			} else {
-						
-				return function (inScope, inStringKey, inDefaultString) {
-				
-					return iridia.localizedString.stringForKey("mono.date.relativeDate" + (inScope === undefined ? "" : ("." + String(inScope))), inStringKey) || (inDefaultString || "");
-				
-				}
-				
-			}
-		
-		})();
 		
 		
 		//	These strings are localized under mono.date.relativeDate.{scope} but we do not transform them now.  We do that later on-demand.
@@ -684,7 +687,7 @@
 		
 		//	We do the localization till this very end to prevent unnecessary work
 			
-			theResponse = LS(inUnit, conditionLiteral, responseString);
+			theResponse = _irLocalizedString("relativeDate", inUnit, conditionLiteral, responseString);
 			
 			$.each(templates, function (templateItemKey, templateItemValue) {
 			
@@ -715,6 +718,48 @@
 		return theResponse;
 	
 	}
+
+
+
+
+
+
+
+
+
+})({
+
+//! 
+//!	Presets Capture
+
+	"_irLocalizedString": (function () {
+		
+		if ((iridia === undefined) || !iridia.hasOwnProperty("localizedString")) {
+		
+			return function (inCategory, inScope, inStringKey, inDefaultString) {
+		
+				return inDefaultString;				
+			
+			}
+
+		} else {
+					
+			return function (inCategory, inScope, inStringKey, inDefaultString) {
+			
+				return iridia.localizedString.stringForKey(("mono.date." + String(inCategory) + "." + String(inScope)), String(inStringKey)) || (inDefaultString || "");
+			
+			}
+			
+		}
+	
+	})()
+
+});
+
+
+
+
+
 
 
 
