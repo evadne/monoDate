@@ -11,6 +11,27 @@
 	
 	
 	
+	iridia.localizedString.registerStrings("mono.date.names.weekdays", "zh-TW", {
+	
+		"0": "週日",
+		"1": "週一",
+		"2": "週二",
+		"3": "週三",
+		"4": "週四",
+		"5": "週五",
+		"6": "週六"
+	
+	});
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	iridia.localizedString.registerStrings("mono.date.relativeDate.days", "zh-TW", {
 	
 		"< -2": "#{DIFFERENCE_VALUE} 天以前",
@@ -32,6 +53,16 @@
 		"== 1": "下週",
 		"== 2": "兩週後",
 		"> 2": "#{DIFFERENCE_VALUE} 星期後"
+	
+	});
+	
+	iridia.localizedString.registerStrings("mono.date.relativeDate.weekdays", "zh-TW", {
+	
+		"< -1": "#{DIFFERENCE_IN_WEEKS} 週前的  #{WEEKDAY_NAME}",
+		"== -1": "上 #{WEEKDAY_NAME}",
+		"== 0": "本 #{WEEKDAY_NAME}",
+		"== 1": "下 #{WEEKDAY_NAME}",
+		"> 1": "#{DIFFERENCE_IN_WEEKS} 週後的 #{WEEKDAY_NAME}"
 	
 	});
 	
