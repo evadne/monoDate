@@ -498,7 +498,7 @@
 		
 		var templates = {
 		
-			"DIFFERENCE_NUMBER": Math.abs(inDifference)
+			"DIFFERENCE_VALUE": Math.abs(inDifference),
 		
 		};
 	
@@ -534,37 +534,37 @@
 		
 			"days": {
 			
-				"< -2": "#{DIFFERENCE_NUMBER} days ago",
-				"== -2": "#{DIFFERENCE_NUMBER} days ago",
-				"== -1": "Yesterday",
-				"== 0": "Today",
-				"== 1": "Tomorrow",
-				"== 2": "The day after tomorrow",
-				"> 2": "#{DIFFERENCE_NUMBER} days after"
+				"< -2": "#{DIFFERENCE_VALUE} days ago",
+				"== -2": "the day before yesterday",
+				"== -1": "yesterday",
+				"== 0": "today",
+				"== 1": "tomorrow",
+				"== 2": "the day after tomorrow",
+				"> 2": "#{DIFFERENCE_VALUE} days after"
 			
 			},
 			
 			"weeks": {
 			
-				"< -2": "#{DIFFERENCE_NUMBER} days ago",
-				"== -2": "#{DIFFERENCE_NUMBER} weeks ago",
+				"< -2": "#{DIFFERENCE_VALUE} weeks ago",
+				"== -2": "#{DIFFERENCE_VALUE} weeks ago",
 				"== -1": "last week",
 				"== 0": "this week",
 				"== 1": "next week",
-				"== 2": "#{DIFFERENCE_NUMBER} weeks after",
-				"> 2": "#{DIFFERENCE_NUMBER} weeks after"
+				"== 2": "#{DIFFERENCE_VALUE} weeks after",
+				"> 2": "#{DIFFERENCE_VALUE} weeks after"
 			
 			},
 			
 			"years": {
 				
-				"< -2": "#{DIFFERENCE_NUMBER} years ago",
-				"== -2": "#{DIFFERENCE_NUMBER} years ago",
+				"< -2": "#{DIFFERENCE_VALUE} years ago",
+				"== -2": "#{DIFFERENCE_VALUE} years ago",
 				"== -1": "last year",
 				"== 0": "this year",
 				"== 1": "next year",
-				"== 2": "#{DIFFERENCE_NUMBER} years after",
-				"> 2": "#{DIFFERENCE_NUMBER} years after"
+				"== 2": "#{DIFFERENCE_VALUE} years after",
+				"> 2": "#{DIFFERENCE_VALUE} years after"
 			
 			}
 		
