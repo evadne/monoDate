@@ -386,56 +386,104 @@
 
 	Date.prototype.relativeDate = function (inMagnitude) {
 	
-		var nowInMilliseconds = (new Date()).getTime();
-		var recentDateInMilliseconds = this.getTime();
+		if (inMagnitude == "") return undefined;
 		
-		var dateDifferenceInMilliseconds = recentDateInMilliseconds - nowInMilliseconds;
-		
-		var dateIsEarlier = (dateDifferenceInMilliseconds < 0) ? true : false;
-		dateDifferenceInMilliseconds = Math.abs(dateDifferenceInMilliseconds);
-		
-		var differenceProportionsFromMilliseconds = {};
-		
-		$.each(["milliseconds", "seconds", "minutes", "hours", "days", "weeks", "years"], function (inUnitIndex, inUnitName) {
-		
-			differenceProportionsFromMilliseconds[inUnitName] = Date.millisecondsFromUnit(inUnitName);
-		
-		});
-		
-		
-		//	Find the appropriate magnitude	
-		
-		if (differenceProportionsFromMilliseconds.hasOwnProperty(inMagnitude)) {
-		
-			finalDateDifferenceMagnitude = inMagnitude;
+		var makeResponse = function (differenceUnit, differenceValue) {
+
+			return {
 			
-		} else {
+				"differenceUnit": differenceUnit,
+				"differenceValue": differenceValue
 			
-			$.each(differenceProportionsFromMilliseconds, function (differenceLevel, differenceMultiplicator) {
-					
-				if (Math.floor(dateDifferenceInMilliseconds / differenceMultiplicator) < 1) return false;
-				
-				finalDateDifferenceMagnitude = differenceLevel;
-				
-			});
+			};	
+		
+		};
+		
+		var flooredDelta = function (inBaseValue, inUnit) {
+		
+			return ((inBaseValue >= 0) ? 1 : -1 ) * Math.floor(Math.abs(inBaseValue) / Math.abs(inUnit));
 		
 		}
 		
-	
-	
-	//	Calculate and return
-		
-		var finalDifferenceLevelValue = differenceProportionsFromMilliseconds[finalDateDifferenceMagnitude];
-		
-		var finalDifferenceValue = (dateIsEarlier ? -1 : 1) * Math.floor(Math.abs(dateDifferenceInMilliseconds) / finalDifferenceLevelValue);
 		
 		
-		return {
-	
-			"differenceUnit": finalDateDifferenceMagnitude,
-			"differenceValue": finalDifferenceValue
 		
-		};
+		
+		var now = new Date();
+		
+		switch (inMagnitude) {
+		
+			case "years": 
+			
+				return makeResponse("years", 
+				
+					now.getUTCFullYear() - this.getUTCFullYear()
+					
+				);
+				
+				break;
+				
+			case "months":
+			
+				return makeResponse("months", 
+				
+					((this.getUTCFullYear() - 1) * 12 + this.getUTCMonth()) - ((now.getUTCFullYear() - 1) * 12 + now.getUTCMonth())
+					
+				);
+			
+				break;
+			
+				
+			case "weeks":
+			
+				return makeResponse("weeks", 
+				
+					((this.getUTCFullYear() - 1) * 54 + this.getWeek()) - ((now.getUTCFullYear() - 1) * 54 + now.getWeek())
+				
+				); break;
+			
+			
+			case "days":	
+			case "milliseconds":
+			case "seconds":
+			case "minutes":
+			case "hours":
+			
+				return makeResponse(inMagnitude, flooredDelta(
+					
+					(this.getTime() - now.getTime()),
+					Date.millisecondsFromUnit(inMagnitude)
+						
+				)); break;
+			
+				
+			default: 
+			
+			//	We’ll have to make out the most meaningful level, starting from milliseconds — eh.
+			
+			//	var finalDateDifferenceMagnitude = "milliseconds";
+				var finalDateDifferenceMagnitude = "days";
+				
+				var timeDelta = this.getTime() - now.getTime();
+			
+				$.each(["milliseconds", "seconds", "minutes", "hours", "days", "weeks", "years"], function (differenceLevelIndex, differenceLevelName) {
+				
+					if (Math.abs(flooredDelta(
+					
+						timeDelta,
+						Date.millisecondsFromUnit(differenceLevelName)
+							
+					)) < 1) return false;
+					
+					finalDateDifferenceMagnitude = differenceLevelName;
+					
+				});
+				
+				return this.relativeDate(finalDateDifferenceMagnitude);
+				
+				break;
+		
+		}
 
 	}
 	
