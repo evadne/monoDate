@@ -217,15 +217,9 @@
 //	! 
 //	!Date Names
 
-	Date.prototype.getDateName = function () {
-		
-		return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][this.getDay()];
-		
-	}
-	
 	Date.prototype.getMonthName = function () {
 		
-		return ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][this.getMonth()];
+		return _irLocalizedString("names", "months", this.getMonth()) || ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][this.getMonth()];
 		
 	}
 	
@@ -234,6 +228,8 @@
 		return _irLocalizedString("names", "weekdays", this.getDay()) || ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][this.getDay()];
 	
 	}
+	
+	Date.prototype.getDateName = Date.prototype.getWeekdayName;
 	
 	
 	
