@@ -331,7 +331,7 @@
 		
 		
 		var dateObject = Date.parse(dateString);
-		if (isNaN(dateObject)) dateObject = new Date();
+		dateObject = (isNaN(dateObject)) ? new Date() : new Date(dateObject);
 		
 		var datePattern = /(\d{4})-?(\d{2})-?(\d{2})/;
 		var timePattern = /(\d{2}):?(\d{2}):?(\d{2})(\.\d+)?/;
